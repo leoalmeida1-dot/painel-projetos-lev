@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projetos Lev — Painel de Gestão</title>
+<style>
+:root{
+  --purple:#5B2D8E; --purple-d:#3E1E63; --magenta:#8E2D5B; --red:#A63A50;
+  --gem:#E8913D; --copper:#B87333; --green:#2e7d4f; --blue:#2b6cb0;
+  --bg:#F5F3F9; --card:#fff; --line:#E6E1EF; --txt:#241A33; --mut:#7A7186;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--txt);font-size:14px;display:flex;min-height:100vh}
+
+/* ---------- sidebar ---------- */
+aside{width:228px;background:linear-gradient(180deg,var(--purple-d),var(--purple) 62%,var(--magenta));color:#fff;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width .18s ease}
+.logo{padding:16px 14px 12px;border-bottom:1px solid rgba(255,255,255,.15)}
+.logo img{height:34px;background:#fff;border-radius:8px;padding:4px 8px;display:block}
+.logo b{display:block;margin-top:9px;font-size:14.5px;letter-spacing:.2px}
+.logo span{font-size:10.5px;color:#D8CCE8;display:block;margin-top:3px;line-height:1.35}
+nav{padding:12px 10px;flex:1;overflow-y:auto}
+nav button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;color:#D8CCE8;padding:11px 12px;border-radius:9px;cursor:pointer;font-size:13.5px;margin-bottom:3px;font-family:inherit}
+nav button:hover{background:rgba(255,255,255,.10);color:#fff}
+nav button.on{background:var(--gem);color:#2A1A08;font-weight:700}
+nav .ico{width:20px;text-align:center;font-size:15px}
+.sync{padding:11px 14px;border-top:1px solid rgba(255,255,255,.15);font-size:11px;color:#D8CCE8;line-height:1.6}
+.sync b{color:#FFD9A6}
+#sbBtn{display:flex;align-items:center;justify-content:center;gap:7px;padding:9px 12px;background:none;border:0;border-top:1px solid rgba(255,255,255,.15);color:#D8CCE8;font-size:11px;cursor:pointer;width:100%;font-family:inherit}
+#sbBtn:hover{background:rgba(255,255,255,.10);color:#fff}
+body.sb-min aside{width:62px}
+body.sb-min .logo{padding:14px 9px}
+body.sb-min .logo img{height:24px;padding:3px}
+body.sb-min .logo b,body.sb-min .logo span{display:none}
+body.sb-min nav{padding:10px 6px}
+body.sb-min nav button{justify-content:center;padding:11px 0;font-size:0;gap:0}
+body.sb-min nav .ico{font-size:18px;width:auto}
+body.sb-min .sync,body.sb-min .sbtxt{display:none}
+body.sb-min #sbBtn .arw{transform:rotate(180deg)}
+
+/* ---------- main ---------- */
+main{flex:1;min-width:0;display:flex;flex-direction:column}
+header{background:#fff;border-bottom:1px solid var(--line);padding:16px 24px;position:sticky;top:0;z-index:20}
+header h1{font-size:18px;color:var(--purple-d)}
+header .sub{color:var(--mut);font-size:12px;margin-top:3px}
+.hbar{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.hbar .f{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px}
+.hbar label{font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.hbar select,.hbar input{border:0;background:none;font-family:inherit;font-size:12.5px;color:var(--txt);outline:none;cursor:pointer}
+.hbar input{cursor:text;width:150px}
+.hbar .btn{background:var(--purple);color:#fff;border:0;border-radius:8px;padding:7px 15px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.hbar .btn:hover{background:var(--purple-d)}
+.wrap{padding:20px 24px 60px;flex:1}
+
+/* ---------- kpis ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .v{font-size:24px;font-weight:700;line-height:1.1;color:var(--purple-d)}
+.kpi .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-top:5px;font-weight:600}
+.kpi.warn .v{color:var(--red)}
+.kpi.ok .v{color:var(--green)}
+
+/* ---------- cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.card .top{padding:14px 16px 12px;border-bottom:1px solid var(--line);position:relative}
+.card .top::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#5B2D8E)}
+.card h3{font-size:15px;color:var(--purple-d);margin-bottom:3px}
+.card .fase{font-size:11px;color:#fff;background:var(--c,#5B2D8E);display:inline-block;padding:2px 9px;border-radius:20px;font-weight:600;margin-top:5px}
+.card .resumo{padding:13px 16px;font-size:12.5px;line-height:1.55;color:#3a3346;flex:1}
+.card .why{background:#FAF8FD;border-left:3px solid var(--c,#5B2D8E);margin:0 16px 12px;padding:9px 11px;font-size:11.5px;line-height:1.5;color:#4a4157;border-radius:0 6px 6px 0}
+.card .foot{padding:12px 16px;border-top:1px solid var(--line);background:#FCFBFE}
+.card .row{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;margin-bottom:6px}
+.card .row span:first-child{color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.3px;font-size:10px;padding-top:1px}
+.card .row span:last-child{text-align:right;font-weight:600;color:#3a3346}
+.card .risk{font-size:11.5px;color:#9B2C3F;background:#FDF2F4;border-radius:6px;padding:8px 10px;line-height:1.5;margin-top:8px}
+.bar{height:6px;background:#EDE9F3;border-radius:4px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--c,#5B2D8E);border-radius:4px}
+
+/* ---------- tabela ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:760px}
+th{background:#F7F5FB;text-align:left;padding:10px 12px;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);border-bottom:1px solid var(--line);position:sticky;top:0;font-weight:700}
+td{padding:11px 12px;border-bottom:1px solid #F0EDF5;vertical-align:top}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:#FCFBFE}
+.tit{font-weight:600;color:#2b2338;line-height:1.4}
+.ctx{font-size:11px;color:var(--mut);margin-top:3px;line-height:1.45}
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap}
+.p-CRÍTICA,.p-Crítica{background:#FDE8EC;color:#9B2C3F}
+.p-Alta{background:#FEF3E2;color:#8a5a12}
+.p-Média{background:#EAF2FB;color:#2b6cb0}
+.p-Baixa{background:#F0EDF5;color:#6b6379}
+.s-Concluído{background:#E6F4EC;color:#1e6b45}
+.s-Em.Andamento,.s-Em-{background:#EAF2FB;color:#2b6cb0}
+.s-Pendente{background:#F3F0F8;color:#6b6379}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;color:#fff}
+.marco{color:var(--gem);font-size:13px;margin-left:4px}
+.late{color:var(--red);font-weight:700}
+
+/* ---------- rotina ---------- */
+.rotina{max-width:900px}
+.blk{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.blk h3{font-size:13px;color:var(--purple-d);text-transform:uppercase;letter-spacing:.6px;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.blk h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--gem)}
+.item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #F3F0F7;font-size:12.5px;line-height:1.5;align-items:flex-start}
+.item:last-child{border-bottom:0;padding-bottom:0}
+.item .b{flex-shrink:0;width:18px;text-align:center;font-size:13px}
+.item .t{flex:1}
+.item .m{font-size:10.5px;color:var(--mut);display:block;margin-top:2px}
+.vazio{font-size:12.5px;color:var(--mut);font-style:italic;padding:6px 0}
+.chk{display:flex;gap:10px;padding:8px 0;align-items:flex-start;font-size:12.5px;cursor:pointer;line-height:1.45}
+.chk input{margin-top:2px;width:16px;height:16px;cursor:pointer;accent-color:var(--purple)}
+.chk.done{opacity:.5;text-decoration:line-through}
+
+.tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.tabs button{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:12.5px;cursor:pointer;color:#4a4157;font-family:inherit;font-weight:600}
+.tabs button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
+
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start}
+.kcol{background:#EFEBF5;border-radius:12px;padding:10px}
+.kcol h4{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);margin-bottom:9px;padding:0 3px;display:flex;justify-content:space-between}
+.kcard{background:#fff;border-radius:9px;padding:10px 11px;margin-bottom:8px;box-shadow:0 1px 2px rgba(60,40,90,.07);border-left:3px solid var(--c,#ccc)}
+.kcard .kt{font-size:12px;font-weight:600;line-height:1.4;color:#2b2338}
+.kcard .km{font-size:10.5px;color:var(--mut);margin-top:5px;display:flex;justify-content:space-between;gap:6px}
+
+@media(max-width:900px){
+  .kanban{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  body{flex-direction:column}
+  aside{width:100%!important;height:auto;position:static;flex-direction:row;align-items:center;overflow-x:auto;padding:8px 6px}
+  .logo{border:0;padding:0 10px 0 4px;flex-shrink:0}
+  .logo img{height:26px;padding:2px 5px}
+  .logo b,.logo span,#sbBtn,.sync{display:none}
+  nav{display:flex;padding:0;gap:4px;flex:1;overflow:visible}
+  nav button{font-size:0;padding:9px 12px;margin:0;min-width:42px;justify-content:center}
+  nav .ico{font-size:17px;width:auto}
+  nav button.on{font-size:0}
+  header{padding:13px 16px;position:static}
+  header h1{font-size:16px}
+  .wrap{padding:14px 14px 50px}
+  .grid{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr);gap:9px}
+  .kpi{padding:11px 12px}
+  .kpi .v{font-size:20px}
+  .kpi .l{font-size:9.5px}
+  .tabs button{font-size:11.5px;padding:7px 11px}
+}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="logo">
+    <img id="logoimg" alt="Lev">
+    <b>Projetos Lev</b>
+    <span>Gestão de projetos &amp; rotina diária</span>
+  </div>
+  <nav id="nav">
+    <button data-v="rotina" class="on"><span class="ico">☀</span><span class="sbtxt">Rotina do dia</span></button>
+    <button data-v="projetos"><span class="ico">◧</span><span class="sbtxt">Projetos</span></button>
+    <button data-v="acoes"><span class="ico">☰</span><span class="sbtxt">Ações</span></button>
+    <button data-v="kanban"><span class="ico">▤</span><span class="sbtxt">Kanban</span></button>
+  </nav>
+  <div class="sync">
+    <b id="atualizado">—</b><br>
+    <span id="syncTxt">carregando…</span>
+  </div>
+  <button id="sbBtn"><span class="arw">◀</span><span class="sbtxt">recolher</span></button>
+</aside>
+
+<main>
+  <header>
+    <h1 id="titulo">Rotina do dia</h1>
+    <div class="sub" id="subtitulo">O que mudou, o que vence, o que travou.</div>
+    <div class="hbar" id="barra">
+      <div class="f"><label>Projeto</label>
+        <select id="fProj"><option value="">Todos</option></select>
+      </div>
+      <div class="f"><label>Status</label>
+        <select id="fStatus">
+          <option value="">Todos</option>
+          <option>Pendente</option><option>Em Andamento</option><option>Concluído</option>
+        </select>
+      </div>
+      <div class="f"><label>Buscar</label>
+        <input id="fBusca" placeholder="ação, contexto…">
+      </div>
+      <button class="btn" id="btnLimpar">Limpar</button>
+    </div>
+  </header>
+  <div class="wrap" id="view"></div>
+</main>
+
+<script src="data.js"></script>
+<script>
+var D = window.DADOS || {projetos:[], acoes:[]};
+var VIEW = 'rotina';
+var F = {proj:'', status:'', busca:''};
+
+/* ---------- utilidades ---------- */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function hoje(){ var d=new Date(); return new Date(d.getFullYear(),d.getMonth(),d.getDate()); }
+function prazo(s){ if(!s) return null; var p=s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+function fmt(s){ if(!s) return 'A definir'; var p=s.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+function dias(s){ var d=prazo(s); if(!d) return null;
+  return Math.round((d-hoje())/86400000); }
+function atrasada(a){ var d=dias(a.prazo); return d!==null && d<0 && a.status!=='Concluído'; }
+function projDe(id){ return D.projetos.filter(function(p){return p.id===id;})[0] || {nome:id,cor:'#999',sigla:id}; }
+
+/* ---------- filtro ---------- */
+function passa(a){
+  if(F.proj && a.projeto!==F.proj) return false;
+  if(F.status && a.status!==F.status) return false;
+  if(F.busca){
+    var q=F.busca.toLowerCase();
+    if((a.titulo+' '+a.contexto+' '+a.responsavel).toLowerCase().indexOf(q)<0) return false;
+  }
+  return true;
+}
+function filtradas(){ return D.acoes.filter(passa); }
+
+/* ---------- header ---------- */
+var CABEC = {
+  rotina:['Rotina do dia','O que mudou, o que vence, o que travou.'],
+  projetos:['Projetos','Os quatro projetos sob sua gestão.'],
+  acoes:['Ações','Todas as ações por projeto.'],
+  kanban:['Kanban','Ações por status.']
+};
+function pintaCabecalho(){
+  var c = CABEC[VIEW];
+  document.getElementById('titulo').textContent = c[0];
+  document.getElementById('subtitulo').textContent = c[1];
+  document.getElementById('barra').style.display = (VIEW==='rotina') ? 'none' : 'flex';
+  Array.prototype.forEach.call(document.querySelectorAll('#nav button'), function(b){
+    b.classList.toggle('on', b.getAttribute('data-v')===VIEW);
+  });
+}
+
+/* ---------- views ---------- */
+function viewRotina(){
+  var A = D.acoes;
+  var atras = A.filter(atrasada).sort(function(x,y){return dias(x.prazo)-dias(y.prazo);});
+  var sem = A.filter(function(a){return !a.prazo && a.status!=='Concluído' && a.prioridade==='Crítica';});
+  var semana = A.filter(function(a){ var d=dias(a.prazo); return d!==null && d>=0 && d<=7 && a.status!=='Concluído';})
+                 .sort(function(x,y){return dias(x.prazo)-dias(y.prazo);});
+  var andamento = A.filter(function(a){return a.status==='Em Andamento';});
+  var marcos = A.filter(function(a){return a.marco && a.status!=='Concluído';});
+  var concl = A.filter(function(a){return a.status==='Concluído';});
+
+  var h = '<div class="rotina">';
+
+  h += '<div class="kpis">'
+    + '<div class="kpi"><div class="v">'+A.length+'</div><div class="l">Ações</div></div>'
+    + '<div class="kpi '+(atras.length?'warn':'ok')+'"><div class="v">'+atras.length+'</div><div class="l">Atrasadas</div></div>'
+    + '<div class="kpi"><div class="v">'+andamento.length+'</div><div class="l">Em andamento</div></div>'
+    + '<div class="kpi ok"><div class="v">'+concl.length+'</div><div class="l">Concluídas</div></div>'
+    + '</div>';
+
+  /* 1 - atrás */
+  h += '<div class="blk"><h3><span class="dot" style="background:#A63A50"></span>1 · Atrasadas</h3>';
+  if(atras.length){
+    atras.forEach(function(a){
+      h += '<div class="item"><span class="b">⚠</span><span class="t">'+esc(a.titulo)
+        + '<span class="m">'+esc(projDe(a.projeto).nome)+' · '+esc(a.responsavel)
+        + ' · venceu em '+fmt(a.prazo)+' ('+Math.abs(dias(a.prazo))+'d)</span></span></div>';
+    });
+  } else { h += '<div class="vazio">Nada atrasado.</div>'; }
+  h += '</div>';
+
+  /* 2 - vence esta semana */
+  h += '<div class="blk"><h3><span class="dot"></span>2 · Vence em até 7 dias</h3>';
+  if(semana.length){
+    semana.forEach(function(a){
+      var d = dias(a.prazo);
+      var quando = d===0 ? 'hoje' : d===1 ? 'amanhã' : 'em '+d+' dias';
+      h += '<div class="item"><span class="b">◔</span><span class="t">'+esc(a.titulo)
+        + '<span class="m">'+esc(projDe(a.projeto).nome)+' · '+esc(a.responsavel)
+        + ' · '+fmt(a.prazo)+' ('+quando+')</span></span></div>';
+    });
+  } else { h += '<div class="vazio">Nada vencendo nesta semana.</div>'; }
+  if(sem.length){
+    h += '<div class="item" style="margin-top:8px"><span class="b">●</span><span class="t" style="color:#9B2C3F">'
+      + sem.length + ' ação(ões) crítica(s) sem prazo definido — resolver a data primeiro.</span></div>';
+  }
+  h += '</div>';
+
+  /* 3 - marcos */
+  h += '<div class="blk"><h3><span class="dot"></span>3 · Próximos marcos</h3>';
+  if(marcos.length){
+    marcos.slice(0,8).forEach(function(a){
+      h += '<div class="item"><span class="b">◆</span><span class="t">'+esc(a.titulo)
+        + '<span class="m">'+esc(projDe(a.projeto).nome)+' · '+esc(a.responsavel)
+        + (a.prazo ? ' · '+fmt(a.prazo) : ' · sem prazo')+'</span></span></div>';
+    });
+  } else { h += '<div class="vazio">Nenhum marco aberto.</div>'; }
+  h += '</div>';
+
+  /* 4 - checklist do dia */
+  var chave = 'lev_rotina_' + new Date().toISOString().slice(0,10);
+  var feito = {};
+  try { feito = JSON.parse(localStorage.getItem(chave) || '{}'); } catch(e){}
+  var itens = [
+    'Abrir o Painel PPC e ver o farol dos GCs',
+    'Verificar as ações atrasadas e sem prazo',
+    'Atualizar o status do que andou ontem',
+    'Revisar o próximo marco de cada projeto',
+    'Anotar a decisão do dia (o que travou e por quê)'
+  ];
+  h += '<div class="blk"><h3><span class="dot"></span>4 · Checklist do dia</h3>';
+  itens.forEach(function(t,i){
+    var on = !!feito[i];
+    h += '<label class="chk '+(on?'done':'')+'"><input type="checkbox" data-rot="'+i+'" '+(on?'checked':'')+'> <span>'+esc(t)+'</span></label>';
+  });
+  h += '<div class="vazio" id="rotMsg" style="margin-top:8px"></div></div>';
+
+  h += '</div>';
+  return h;
+}
+
+function viewProjetos(){
+  var A = D.acoes;
+  var h = '<div class="grid">';
+  D.projetos.forEach(function(p){
+    var minhas = A.filter(function(a){return a.projeto===p.id;});
+    var conc = minhas.filter(function(a){return a.status==='Concluído';}).length;
+    var atras = minhas.filter(atrasada).length;
+    var and = minhas.filter(function(a){return a.status==='Em Andamento';}).length;
+    var aber = minhas.length - conc;
+    h += '<div class="card" style="--c:'+p.cor+'">'
+      + '<div class="top"><h3>'+esc(p.nome)+'</h3>'
+      + '<div style="font-size:11px;color:var(--mut)">Responsável: '+esc(p.dono)+'</div>'
+      + '<div class="fase">'+esc(p.fase)+'</div></div>'
+      + '<div class="resumo">'+esc(p.resumo)+'</div>'
+      + '<div class="why">'+esc(p.porque)+'</div>'
+      + '<div class="foot">'
+      + '<div class="row"><span>Ações</span><span>'+conc+' concluídas · '+aber+' abertas'+(atras?' · <span style="color:#A63A50">'+atras+' atrasada(s)</span>':'')+'</span></div>'
+      + '<div class="row"><span>Próximo marco</span><span>'+esc(p.proximoMarco)+'</span></div>'
+      + '<div class="risk">⚠ '+esc(p.risco)+'</div>'
+      + '<div style="margin-top:9px"><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mut);font-weight:600"><span>PROGRESSO</span><span>'+p.progresso+'%</span></div>'
+      + '<div class="bar"><i style="width:'+p.progresso+'%"></i></div></div>'
+      + '</div></div>';
+  });
+  h += '</div>';
+  return h;
+}
+
+function viewAcoes(){
+  var L = filtradas();
+  if(!L.length) return '<div class="tblwrap" style="padding:26px;text-align:center;color:#7A7186">Nenhuma ação com esses filtros.</div>';
+  L = L.slice().sort(function(a,b){
+    var pa={'Crítica':0,'Alta':1,'Média':2,'Baixa':3};
+    if(a.status!==b.status){ var o={'Em Andamento':0,'Pendente':1,'Concluído':2}; return (o[a.status]||0)-(o[b.status]||0); }
+    return (pa[a.prioridade]||9)-(pa[b.prioridade]||9);
+  });
+  var h = '<div class="tblwrap"><table><thead><tr>'
+    + '<th>Projeto</th><th>Ação</th><th>Responsável</th><th>Prazo</th><th>Prioridade</th><th>Status</th>'
+    + '</tr></thead><tbody>';
+  L.forEach(function(a){
+    var p = projDe(a.projeto);
+    var d = dias(a.prazo);
+    var pr = a.prazo ? fmt(a.prazo) : 'A definir';
+    if(atrasada(a)) pr = '<span class="late">'+pr+' ('+Math.abs(d)+'d)</span>';
+    else if(d!==null && d>=0 && d<=2 && a.status!=='Concluído') pr = '<b>'+pr+'</b>';
+    h += '<tr>'
+      + '<td><span class="tag" style="background:'+p.cor+'">'+esc(p.sigla)+'</span></td>'
+      + '<td><div class="tit">'+esc(a.titulo)+(a.marco?'<span class="marco">◆</span>':'')+'</div>'
+      + (a.contexto?'<div class="ctx">'+esc(a.contexto)+'</div>':'')+'</td>'
+      + '<td>'+esc(a.responsavel)+'</td>'
+      + '<td>'+pr+'</td>'
+      + '<td><span class="pill p-'+esc(a.prioridade)+'">'+esc(a.prioridade)+'</span></td>'
+      + '<td><span class="pill s-'+esc(a.status).replace(/ /g,'-')+'">'+esc(a.status)+'</span></td>'
+      + '</tr>';
+  });
+  h += '</tbody></table></div>';
+  return h;
+}
+
+function viewKanban(){
+  var L = filtradas();
+  var cols = ['Pendente','Em Andamento','Concluído'];
+  var h = '<div class="kanban">';
+  cols.forEach(function(c){
+    var ls = L.filter(function(a){return a.status===c;});
+    h += '<div class="kcol"><h4><span>'+c+'</span><span>'+ls.length+'</span></h4>';
+    ls.forEach(function(a){
+      var p = projDe(a.projeto);
+      h += '<div class="kcard" style="--c:'+p.cor+'">'
+        + '<div class="kt">'+esc(a.titulo)+'</div>'
+        + '<div class="km"><span>'+esc(p.sigla)+' · '+esc(a.responsavel)+'</span>'
+        + '<span>'+(a.prazo?fmt(a.prazo):'—')+'</span></div></div>';
+    });
+    if(!ls.length) h += '<div class="vazio" style="font-size:11px">vazio</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  return h;
+}
+
+/* ---------- render ---------- */
+function render(){
+  pintaCabecalho();
+  var v = document.getElementById('view');
+  if(VIEW==='rotina') v.innerHTML = viewRotina();
+  else if(VIEW==='projetos') v.innerHTML = viewProjetos();
+  else if(VIEW==='acoes') v.innerHTML = viewAcoes();
+  else v.innerHTML = viewKanban();
+
+  if(VIEW==='rotina'){
+    var chave = 'lev_rotina_' + new Date().toISOString().slice(0,10);
+    var feito = {};
+    try { feito = JSON.parse(localStorage.getItem(chave) || '{}'); } catch(e){}
+    Array.prototype.forEach.call(v.querySelectorAll('[data-rot]'), function(cb){
+      cb.addEventListener('change', function(){
+        feito[cb.getAttribute('data-rot')] = cb.checked;
+        try { localStorage.setItem(chave, JSON.stringify(feito)); } catch(e){}
+        cb.parentNode.classList.toggle('done', cb.checked);
+        var total = v.querySelectorAll('[data-rot]').length;
+        var ok = Object.keys(feito).filter(function(k){return feito[k];}).length;
+        var m = document.getElementById('rotMsg');
+        if(m) m.textContent = ok+' de '+total+' do checklist do dia concluídos.';
+      });
+    });
+  }
+}
+
+/* ---------- eventos ---------- */
+document.getElementById('nav').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-v]'); if(!b) return;
+  Array.prototype.forEach.call(this.querySelectorAll('button'), function(x){x.classList.remove('on');});
+  b.classList.add('on');
+  VIEW = b.getAttribute('data-v');
+  render();
+});
+document.getElementById('fProj').addEventListener('change', function(){ F.proj=this.value; render(); });
+document.getElementById('fStatus').addEventListener('change', function(){ F.status=this.value; render(); });
+document.getElementById('fBusca').addEventListener('input', function(){ F.busca=this.value; render(); });
+document.getElementById('btnLimpar').addEventListener('click', function(){
+  F={proj:'',status:'',busca:''};
+  document.getElementById('fProj').value='';
+  document.getElementById('fStatus').value='';
+  document.getElementById('fBusca').value='';
+  render();
+});
+document.getElementById('sbBtn').addEventListener('click', function(){
+  document.body.classList.toggle('sb-min');
+});
+
+/* ---------- boot ---------- */
+(function(){
+  var sel = document.getElementById('fProj');
+  D.projetos.forEach(function(p){
+    var o = document.createElement('option');
+    o.value = p.id; o.textContent = p.nome; sel.appendChild(o);
+  });
+  document.getElementById('atualizado').textContent = 'Atualizado ' + (D.atualizado || '—');
+  var abertas = D.acoes.filter(function(a){return a.status!=='Concluído';}).length;
+  document.getElementById('syncTxt').textContent = abertas + ' ações abertas de ' + D.acoes.length;
+  var lg = document.getElementById('logoimg');
+  if(window.LOGO) lg.src = window.LOGO;
+  render();
+})();
+</script>
+</body>
+</html>
