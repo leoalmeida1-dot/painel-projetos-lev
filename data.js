@@ -1,0 +1,236 @@
+window.DADOS = {
+ "atualizado": "11/11/2026",
+ "projetos": [
+  {
+   "id": "CRM",
+   "nome": "CRM Lev",
+   "sigla": "CRM",
+   "fase": "Especificação",
+   "cor": "#5B2D8E",
+   "dono": "Léo",
+   "resumo": "Substituir o Ploomes por CRM próprio. Doc técnico e protótipo prontos; falta a cotação e a escolha do fornecedor.",
+   "porque": "Custo: R$ 21,5 mil/mês de run-rate no Ploomes (~R$ 258–268 mil/ano). Desligar em nov/26 evita R$ 65,2 mil em 3 meses.",
+   "proximoMarco": "Escopo de cotação refeito e enviado ao fornecedor",
+   "risco": "O escopo atual está desatualizado: a premissa 'LEVAPP consome o Ploomes' foi revogada em 04/11 e migração virou escopo obrigatório.",
+   "progresso": 45
+  },
+  {
+   "id": "LEVPLUS",
+   "nome": "LEV+ (LEVAPP)",
+   "sigla": "LEV+",
+   "fase": "Concepção",
+   "cor": "#8E2D5B",
+   "dono": "Léo",
+   "resumo": "App que integra todos os projetos, começando pelo CRM. Depois D.Ai, PPC, Iris e Bom dia Gerente.",
+   "porque": "É o guarda-chuva: sem ele cada projeto vira uma ferramenta solta e o time não tem um lugar só.",
+   "proximoMarco": "Definir a ordem de integração dos módulos e quem constrói",
+   "risco": "Depende do CRM para sair do papel — LEV+ e CRM têm o mesmo caminho crítico.",
+   "progresso": 15
+  },
+  {
+   "id": "DAI",
+   "nome": "D.Ai",
+   "sigla": "D.Ai",
+   "fase": "Concepção",
+   "cor": "#A63A50",
+   "dono": "Léo",
+   "resumo": "Agente comercial de IA que prospecta, cadastra, acompanha e intermedia demandas operacionais com o time operacional.",
+   "porque": "Tira do gerente o trabalho de digitação e alimentação — o comercial fala, o agente registra.",
+   "proximoMarco": "Fechar o escopo funcional e os sistemas que ele vai operar no go-live",
+   "risco": "Escopo aberto: sem definir o que ele faz no dia 1, o projeto não sai do conceito.",
+   "progresso": 25
+  },
+  {
+   "id": "PPC",
+   "nome": "PPC",
+   "sigla": "PPC",
+   "fase": "Operação",
+   "cor": "#B87333",
+   "dono": "Léo",
+   "resumo": "Programa de Progressão Comercial. O painel do GC está no ar; faltam as visões por perfil.",
+   "porque": "É a política que rege promoção, bônus e cobrança do time comercial.",
+   "proximoMarco": "Construir as visões Regional, Gerentes de Gestão, Influenciador Lev e GC influenciador",
+   "risco": "O painel atual mostra só o GC. Sem as outras visões, a gestão dos líderes fica sem instrumento.",
+   "progresso": 60
+  }
+ ],
+ "acoes": [
+  {
+   "id": "CRM-01",
+   "projeto": "CRM",
+   "titulo": "Refazer o escopo de cotação com a premissa de substituição do Ploomes",
+   "responsavel": "Léo",
+   "prazo": "2026-11-18",
+   "status": "Em Andamento",
+   "prioridade": "Alta",
+   "contexto": "A premissa 'LEVAPP consome o Ploomes' foi revogada em 04/11. Migração de dados, paralelismo e automações de e-mail/SMS entram como escopo obrigatório — o arquivo atual está desatualizado.",
+   "marco": true
+  },
+  {
+   "id": "CRM-02",
+   "projeto": "CRM",
+   "titulo": "Responder as 3 perguntas que travam a cotação",
+   "responsavel": "Léo",
+   "prazo": "2026-11-18",
+   "status": "Pendente",
+   "prioridade": "Crítica",
+   "contexto": "Faltam: (1) meses de histórico a migrar; (2) nº de usuários no go-live e em 12 meses; (3) quem sustenta o CRM após a entrega. Sem essas três, nenhum fornecedor fecha número.",
+   "marco": true
+  },
+  {
+   "id": "CRM-03",
+   "projeto": "CRM",
+   "titulo": "Validar a seção 6 do documento técnico com o Eduardo",
+   "responsavel": "Léo / Eduardo",
+   "prazo": "2026-11-18",
+   "status": "Pendente",
+   "prioridade": "Alta",
+   "contexto": "Seção marcada como [A VALIDAR]: nomenclatura das etapas, se a faixa usa produção paga ou digitada, fórmula do spread, definição de acionamento no suporte, automações de e-mail/SMS e base do % da pirâmide.",
+   "marco": false
+  },
+  {
+   "id": "CRM-04",
+   "projeto": "CRM",
+   "titulo": "Definir fornecedor e modelo de contratação",
+   "responsavel": "Léo / Bergson",
+   "prazo": "",
+   "status": "Pendente",
+   "prioridade": "Alta",
+   "contexto": "Com o escopo refeito, cotar e escolher quem constrói. Decisão conjunta com o Bergson (financeiro).",
+   "marco": true
+  },
+  {
+   "id": "CRM-05",
+   "projeto": "CRM",
+   "titulo": "Aprovar a data-alvo de desligamento do Ploomes",
+   "responsavel": "Léo / Bergson / Dayanne",
+   "prazo": "2026-11-30",
+   "status": "Pendente",
+   "prioridade": "Crítica",
+   "contexto": "O cenário apresentado considera desligar em nov/26 (economia bruta de R$ 65,2 mil em 3 meses). Precisa de aprovação formal da diretoria antes de virar compromisso.",
+   "marco": true
+  },
+  {
+   "id": "CRM-06",
+   "projeto": "CRM",
+   "titulo": "Definir a arquitetura de migração dos dados históricos",
+   "responsavel": "Léo",
+   "prazo": "",
+   "status": "Pendente",
+   "prioridade": "Média",
+   "contexto": "O Ploomes tem 370.441 InteractionRecords e as carteiras por GC. Definir o que migra, o que fica como histórico consultivo e o que se perde.",
+   "marco": false
+  },
+  {
+   "id": "LEV-01",
+   "projeto": "LEVPLUS",
+   "titulo": "Definir a ordem de integração dos módulos",
+   "responsavel": "Léo",
+   "prazo": "2026-11-25",
+   "status": "Em Andamento",
+   "prioridade": "Alta",
+   "contexto": "Ordem declarada: CRM → D.Ai → PPC → Iris → Bom dia Gerente. Falta formalizar o que entra em cada fase e o que fica de fora.",
+   "marco": true
+  },
+  {
+   "id": "LEV-02",
+   "projeto": "LEVPLUS",
+   "titulo": "Definir a arquitetura técnica e quem constrói o app",
+   "responsavel": "Léo / Bergson",
+   "prazo": "",
+   "status": "Pendente",
+   "prioridade": "Alta",
+   "contexto": "Decidir se o LEV+ é construído pelo mesmo fornecedor do CRM ou separado — e qual o custo de cada caminho.",
+   "marco": false
+  },
+  {
+   "id": "DAI-01",
+   "projeto": "DAI",
+   "titulo": "Fechar o escopo funcional do D.Ai",
+   "responsavel": "Léo",
+   "prazo": "2026-11-25",
+   "status": "Em Andamento",
+   "prioridade": "Alta",
+   "contexto": "Funções declaradas: prospectar, cadastrar, acompanhar e intermediar demandas operacionais com o time operacional. Precisa virar lista do que ele faz sozinho e do que passa para humano.",
+   "marco": true
+  },
+  {
+   "id": "DAI-02",
+   "projeto": "DAI",
+   "titulo": "Definir os sistemas que o D.Ai vai operar no go-live",
+   "responsavel": "Léo",
+   "prazo": "",
+   "status": "Pendente",
+   "prioridade": "Média",
+   "contexto": "Ele depende do CRM existir para operar. Definir se no piloto ele usa Ploomes, planilha ou já o CRM novo.",
+   "marco": false
+  },
+  {
+   "id": "PPC-01",
+   "projeto": "PPC",
+   "titulo": "Construir a visão Regional (Gerente de Gestão Regional)",
+   "responsavel": "Léo",
+   "prazo": "2026-11-20",
+   "status": "Pendente",
+   "prioridade": "Alta",
+   "contexto": "Critérios oficiais do GR: recorrência (R6), quantidade de GCs na equipe (C=2, B=4, A=6, AB+=5–7), GCs em posição B e Score MB. É a visão de quem lidera a região.",
+   "marco": true
+  },
+  {
+   "id": "PPC-02",
+   "projeto": "PPC",
+   "titulo": "Construir a visão Gerentes de Gestão",
+   "responsavel": "Léo",
+   "prazo": "2026-11-25",
+   "status": "Pendente",
+   "prioridade": "Alta",
+   "contexto": "Os ~10 Gerentes de Gestão que lideram os GCs. Visão de carteira da equipe, não de GC individual.",
+   "marco": true
+  },
+  {
+   "id": "PPC-03",
+   "projeto": "PPC",
+   "titulo": "Construir a visão Influenciador Lev (IL)",
+   "responsavel": "Léo",
+   "prazo": "2026-11-27",
+   "status": "Pendente",
+   "prioridade": "Alta",
+   "contexto": "Critérios do IL no Estudo PPC: seguidores, média de demandas, 3 conteúdos por mês (colab com a Lev + 1 manhã com a Lev) e 3 reuniões com bancos por mês. É papel digital, não nível de carreira.",
+   "marco": true
+  },
+  {
+   "id": "PPC-04",
+   "projeto": "PPC",
+   "titulo": "Construir a visão GC influenciador",
+   "responsavel": "Léo",
+   "prazo": "2026-11-27",
+   "status": "Pendente",
+   "prioridade": "Média",
+   "contexto": "O GC que acumula o papel de Influenciador Lev — só possível em posição B ou A. A visão precisa mostrar a régua dupla: como GC e como influenciador.",
+   "marco": false
+  },
+  {
+   "id": "PPC-05",
+   "projeto": "PPC",
+   "titulo": "Operacionalizar o PPC dentro do LEV+",
+   "responsavel": "Léo",
+   "prazo": "",
+   "status": "Pendente",
+   "prioridade": "Média",
+   "contexto": "O PPC já está entregue e roda em painel próprio. A integração no LEV+ é a última etapa do módulo.",
+   "marco": false
+  },
+  {
+   "id": "ROT-01",
+   "projeto": "CRM",
+   "titulo": "Definir o horário e o formato da leitura diária",
+   "responsavel": "Léo",
+   "prazo": "2026-11-13",
+   "status": "Pendente",
+   "prioridade": "Alta",
+   "contexto": "A rotina diária lê este painel e o do PPC. Definir que horas o Leo abre e o que ele precisa ver em 5 minutos: o que mudou, o que vence e o que travou.",
+   "marco": false
+  }
+ ]
+};
+window.LOGO = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCAA8AGIDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD7+ooooAKKKKACikzRmgBaKTNGaAFooooAKKKKACiiigAooooAR2CxszMFAGST2rwnwR+0Xa/EH9om4+H+gaMP7It4J3OqSyHfO8RAyiAYCEk8k5PtXt2o/wDIIu/+uL/+gmvg39k2Dy/2oi2MD7Bef+hLXXh6cJQnKW6WhvSpc8ZS7H3bqmqafomjXOravew2VlbIZJridgqRqOpJr5w179tXwNp+sNa6J4b1fWLZWwbvelur+6q3JH1xWd+2h4h1JNK8OeDrSV47W9aS7uVBwJShVUVvYFicfSurvPAfw1+B/wCzrNqV74Js/El0tui3Mk9ssz3EzjGSzA+XGCe3Qe9OjCjGClUV29kVCilGMpK99jvPhh8a/BPxWtZB4fuprfUIV3zabeKEmQf3gMkMvuCfen3Pxr8AW3xctvht/ass2uzTfZ2SKImOKTbuCO/QMfQZ5r5i/Zy8HLp/xEh+KXiHULDwxooMyWENxMIhds4IKx7zkxqD1PUgVU+Puiz+Bv2po/F2nBlS6kg1iF17upG/H1KE/wDAqKlKiqjSelvxOinglOq6S7H2p4o8RWHhPwbqXiTU2K2lhbtcS46sAOFHuTgD614l+z78TvH/AMV/G/iXXNbnitfD1oqQ2mnQwqFSRiW5kxuYhRz2+bpVf9qLxnFJ8E9I0nT5v+RgdJzg9YFAf8iStdh+zd4THhb4B6a0kWy61Nm1CbIwfn+4D/wELWMJQVNr7RLw3s8N7aa3dl+p67RRRWJwBRRRQAUUUUARXURmsZoVIBkRkBPbIxX57+FNX174J/Ge81GfRY5dQtfOtXtbotGpV2+8CPYZB6c1+hvaszUPD+iatOsuq6NYXrqMK1xAshA9ASKUnNK0Wejl+Mp4fmjVhzRl8j5/+Jeg/wDDQnwI0fxv4YsXTVLFpCbBiCzDpLGD3IIBHrXO+F/2kLzRvBy+FfHfhKTVJ7aL7KzlghlQDbtljcdccH19K+qrDTbDS7MWmm2VvaQAkiKCMIoJ6nA4qrfeGvD+p3P2jUtD067lx/rJ7dHb8yM1ElNpJSNqOPw6Tp1aXNC91rZr5nyLpuj+Jf2gPixpl/Posel+GNL2RrHCmILaBSG8tTgBnbAHA/lXqn7TvgmTXvAmna7YWjTTaTKVlEa5IgYcn6AgH8TXutvbQWlutvawRQRKMLHGoVR9AKkZQylWUEEYIPep9nJwab1Y5ZtbEU6tKFow2X539T4ItLfXfibr/hbwx5TzfYbaPTY9uTsiDEs7emFP6Cvu+xtIbDTbextlCQwRrEijsqjA/lUVno+l6dK8thplpavIcu0ESoW+pA5q8Bx0qcPSlTT55XYs2zSONcY04ckY3031e7FoooroPICiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z";
