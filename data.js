@@ -1,5 +1,5 @@
 window.DADOS = {
- "atualizado": "11/11/2026",
+ "atualizado": "12/11/2026",
  "projetos": [
   {
    "id": "CRM",
@@ -230,6 +230,52 @@ window.DADOS = {
    "prioridade": "Alta",
    "contexto": "A rotina diária lê este painel e o do PPC. Definir que horas o Leo abre e o que ele precisa ver em 5 minutos: o que mudou, o que vence e o que travou.",
    "marco": false
+  },
+  {
+   "id": "CRM-07",
+   "projeto": "CRM",
+   "titulo": "Reunião com Jackson (12/11 11h) — fechar as 3 pendências da cotação",
+   "responsavel": "Léo / Jackson",
+   "prazo": "2026-11-12",
+   "status": "Em Andamento",
+   "prioridade": "Crítica",
+   "contexto": "Reunião de 11h às 12h no Teams. Pauta: meses de histórico a migrar, nº de usuários no go-live e em 12 meses, quem sustenta após a entrega — e a data-alvo de desligamento do Ploomes.",
+   "marco": true
+  },
+  {
+   "id": "LEV-03",
+   "projeto": "LEVPLUS",
+   "titulo": "Reunião com Jackson (12/11 11h) — definir a ordem de integração dos módulos",
+   "responsavel": "Léo / Jackson",
+   "prazo": "2026-11-12",
+   "status": "Em Andamento",
+   "prioridade": "Alta",
+   "contexto": "Mesma reunião de 11/11 11h. Definir o que entra em cada fase do LEV+ (CRM → D.Ai → PPC → Iris → Bom dia Gerente) e o que fica fora.",
+   "marco": true
+  }
+ ],
+ "reunioes": [
+  {
+   "id": "MTG-01",
+   "titulo": "CRM Lev + LEV+ · Reunião de trabalho (Jackson)",
+   "data": "2026-11-12",
+   "inicio": "11:00",
+   "fim": "12:00",
+   "projetos": [
+    "CRM",
+    "LEV+"
+   ],
+   "participantes": [
+    "Léo",
+    "Jackson Nascimento"
+   ],
+   "local": "Microsoft Teams",
+   "joinUrl": "https://teams.microsoft.com/meet/2396671041341943?p=wEFNEVq45BxRZWA7f6",
+   "pauta": [
+    "Escopo de cotação do CRM — as 3 pendências: meses de histórico a migrar, nº de usuários no go-live e em 12 meses, e quem sustenta após a entrega",
+    "Data-alvo de desligamento do Ploomes",
+    "Ordem de integração dos módulos no LEV+"
+   ]
   }
  ]
 };
