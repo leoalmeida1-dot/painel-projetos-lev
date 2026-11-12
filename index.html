@@ -161,6 +161,7 @@ tr:hover td{background:#FCFBFE}
   <nav id="nav">
     <button data-v="rotina" class="on"><span class="ico">☀</span><span class="sbtxt">Rotina do dia</span></button>
     <button data-v="projetos"><span class="ico">◧</span><span class="sbtxt">Projetos</span></button>
+    <button data-v="reunioes"><span class="ico">◷</span><span class="sbtxt">Reuniões</span></button>
     <button data-v="acoes"><span class="ico">☰</span><span class="sbtxt">Ações</span></button>
     <button data-v="kanban"><span class="ico">▤</span><span class="sbtxt">Kanban</span></button>
   </nav>
@@ -227,6 +228,7 @@ function filtradas(){ return D.acoes.filter(passa); }
 var CABEC = {
   rotina:['Rotina do dia','O que mudou, o que vence, o que travou.'],
   projetos:['Projetos','Os quatro projetos sob sua gestão.'],
+  reunioes:['Reuniões','As reuniões ligadas a cada projeto.'],
   acoes:['Ações','Todas as ações por projeto.'],
   kanban:['Kanban','Ações por status.']
 };
@@ -260,6 +262,21 @@ function viewRotina(){
     + '<div class="kpi ok"><div class="v">'+concl.length+'</div><div class="l">Concluídas</div></div>'
     + '</div>';
 
+  /* 0 - reunioes de hoje */
+  var hj = new Date().toISOString().slice(0,10);
+  var reunHoje = (D.reunioes||[]).filter(function(r){ return r.data===hj; });
+  if(reunHoje.length){
+    h += '<div class="blk" style="border-left:4px solid var(--purple)"><h3><span class="dot" style="background:var(--purple)"></span>Hoje · Reuniões</h3>';
+    reunHoje.forEach(function(r){
+      var tags = (r.projetos||[]).map(function(pid){
+        var p = projDe(pid); return '<span class="tag" style="background:'+p.cor+';margin-right:4px">'+esc(p.sigla)+'</span>';
+      }).join('');
+      h += '<div class="item"><span class="b">◷</span><span class="t"><b>'+esc(r.inicio)+'–'+esc(r.fim)+'</b> · '+esc(r.titulo)
+        + '<span class="m">'+tags+' '+esc((r.participantes||[]).join(', '))+'</span></span></div>';
+    });
+    h += '</div>';
+  }
+
   /* 1 - atrás */
   h += '<div class="blk"><h3><span class="dot" style="background:#A63A50"></span>1 · Atrasadas</h3>';
   if(atras.length){
@@ -272,8 +289,7 @@ function viewRotina(){
   h += '</div>';
 
   /* 2 - vence esta semana */
-  h += '<div class="blk"><h3><span class="dot"></span>2 · Vence em até 7 dias</h3>';
-  if(semana.length){
+  h += '<div class="blk"><h3><span class="dot"></span>2 · Vence em até 7 dias</h3>';  if(semana.length){
     semana.forEach(function(a){
       var d = dias(a.prazo);
       var quando = d===0 ? 'hoje' : d===1 ? 'amanhã' : 'em '+d+' dias';
@@ -317,6 +333,37 @@ function viewRotina(){
   });
   h += '<div class="vazio" id="rotMsg" style="margin-top:8px"></div></div>';
 
+  h += '</div>';
+  return h;
+}
+
+function viewReunioes(){
+  var R = (D.reunioes||[]).slice().sort(function(a,b){ return (a.data+a.inicio) < (b.data+b.inicio) ? -1 : 1; });
+  if(!R.length) return '<div class="blk"><div class="vazio">Nenhuma reunião registrada.</div></div>';
+  var h = '<div class="rotina">';
+  R.forEach(function(r){
+    var passou = (r.data < new Date().toISOString().slice(0,10));
+    var tags = (r.projetos||[]).map(function(pid){
+      var p = projDe(pid); return '<span class="tag" style="background:'+p.cor+';margin-right:5px">'+esc(p.sigla)+'</span>';
+    }).join('');
+    h += '<div class="blk" style="'+(passou?'opacity:.62':'')+'">'
+      + '<h3 style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--purple-d);margin-bottom:4px">'
+      + esc(r.titulo)+'</h3>'
+      + '<div style="margin-bottom:10px">'+tags+'</div>'
+      + '<div class="item"><span class="b">📅</span><span class="t"><b>'+fmt(r.data)+'</b> · '+esc(r.inicio)+' às '+esc(r.fim)
+      + '<span class="m">'+esc(r.local)+' · '+esc((r.participantes||[]).join(', '))+'</span></span></div>';
+    if(r.pauta && r.pauta.length){
+      h += '<div style="margin-top:10px;font-size:10px;font-weight:700;color:var(--mut);letter-spacing:.5px">PAUTA</div>';
+      r.pauta.forEach(function(x,i){
+        h += '<div class="item"><span class="b" style="color:var(--gem)">'+(i+1)+'</span><span class="t">'+esc(x)+'</span></div>';
+      });
+    }
+    if(r.joinUrl && !passou){
+      h += '<div style="margin-top:11px"><a href="'+esc(r.joinUrl)+'" target="_blank" rel="noopener" '
+        + 'style="display:inline-block;background:var(--purple);color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600">Entrar no Teams</a></div>';
+    }
+    h += '</div>';
+  });
   h += '</div>';
   return h;
 }
@@ -406,6 +453,7 @@ function render(){
   var v = document.getElementById('view');
   if(VIEW==='rotina') v.innerHTML = viewRotina();
   else if(VIEW==='projetos') v.innerHTML = viewProjetos();
+  else if(VIEW==='reunioes') v.innerHTML = viewReunioes();
   else if(VIEW==='acoes') v.innerHTML = viewAcoes();
   else v.innerHTML = viewKanban();
 
